@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <!-- please note, the jinja if statements are determining if we are working with an already existnt show, or creating a new show entry -->
+        {%if show.id > 0 %}
+            <form action="/shows/update" method="POST">
+            {%csrf_token%}
+            <input type="hidden" name="id" value={{show.id}}>
+        {%else%}
+            <form action="/shows/create" method="POST">
+            {%csrf_token%}
+
+        {%endif%}
+
+        <div class="row">
+            {%if show.id > 0 %}
+                <div class="h1">Edit Show {{show.id}}</div>
+            {%else%}
+                <div class="h1">Add a New Show!</div>
+            {%endif%}
+            <div class="float-right"><a href="/shows/">Go Back</a></div>
+        </div>
+        <div class="input-group m-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="show_title">Title</span>
+            </div>
+            <input type="text" class="form-control" name="show_title" id="show_title" value="{{show.title}}">
+        </div>
+        <div class="row">
+            <div class="input-group m-2 col-5 mx-auto">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="network">Network</span>
+                </div>
+                <input type="text" class="form-control" name="network" id="network" value="{{show.network}}">
+            </div>
+            <div class="input-group m-2 col-5 mx-auto">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="release_date">Release Date</span>
+                </div>
+                <input type="date" class="form-control" name="release_date" id="release_date" value='{{show_release}}'>
+            </div>
+        </div>
+        <div class="input-group m-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="show_desc">Description</span>
+            </div>
+            <textarea type="text" class="form-control" name="show_desc" id="show_desc">{{show.desc}}</textarea>
+        </div>
+        {%if show.id > 0 %}
+            <input type="submit" value="Update" class="btn btn-primary">
+            <a href="/shows/{{show.id}}">Go to Show</a>
+        {%else%}
+            <input type="submit" value="Create" class="btn btn-primary">
+        {%endif%}
+
+    </form>
+    </div>
+</body>
+</html>
